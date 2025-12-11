@@ -1,7 +1,7 @@
 # 🛠️ Backend — Auth Service (NestJS)
 ## 🎯 Objetivo
 
-Criar o serviço de autenticação e multi-tenancy, incluindo:
+Criar o **serviço de autenticação e multi-tenancy**, incluindo:
 
 - Registro
 - Login
@@ -10,21 +10,17 @@ Criar o serviço de autenticação e multi-tenancy, incluindo:
 - Models: User, Tenant
 - Integração com PostgreSQL via Docker
 
-🚀 Stack Técnica
+### 🚀 Stack Técnica
 
-NestJS
+- **NestJS**
+- **TypeORM** + PostgreSQL
+- **Docker + docker-compose**
+- **bcrypt**
+- **JWT (Passport + passport-jwt)**
+- **class-validator / class-transformer**
 
-TypeORM + PostgreSQL
-
-Docker + docker-compose
-
-bcrypt
-
-JWT (Passport + passport-jwt)
-
-class-validator / class-transformer
-
-📂 Estrutura do Auth Service
+### 📂 Estrutura do Auth Service
+```
 services/auth-service/
 ├── src/
 │   ├── auth/
@@ -38,50 +34,34 @@ services/auth-service/
 │   └── main.ts
 ├── Dockerfile
 └── docker-compose.yml
+```
 
-📘 Modelos
-User
+### 📘 Modelos
+#### User
+- id
+- email
+- name
+- passwordHash
+- role
+- tenantId
+- createdAt
+- updatedAt
 
-id
+#### Tenant
+- id
+- name
+- slug
+- plan
+- createdAt
 
-email
+### 🔐 Fluxos Essenciais
 
-name
-
-passwordHash
-
-role
-
-tenantId
-
-createdAt
-
-updatedAt
-
-Tenant
-
-id
-
-name
-
-slug
-
-plan
-
-createdAt
-
-🔐 Fluxos Essenciais
-Registro
-
-Receber email, senha, nome e nome do tenant
-
-Criar Tenant
-
-Hash de senha (bcrypt)
-
-Criar User como administrador do tenant
-
-Retornar 201
+#### Registro
+1. Receber email, senha, nome e nome do tenant
+2. Criar Tenant
+3. Hash de senha (bcrypt)
+4. Criar User como administrador do tenant
+5. Retornar 201
 
 Login
 
