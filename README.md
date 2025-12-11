@@ -4,8 +4,6 @@
 
 O backend do **beSyS** é desenvolvido com **Node.js + NestJS**, estruturado para oferecer alta segurança, modularidade, escalabilidade e facilidade de manutenção.
 
-Este documento inclui **diagramas avançados** de arquitetura, fluxo, módulos e interação.
-
 ---
 
 # 🧭 2. Diagramas Avançados
