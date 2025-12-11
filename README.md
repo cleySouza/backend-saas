@@ -1,7 +1,7 @@
-🛠️ 2. Documentação — Backend (Auth Service)
-🎯 Objetivo do Backend Inicial
+# 🛠️ Documentação — Backend (Auth Service)
+## 🎯 Objetivo do Backend Inicial
 
-Construir o Auth Service completo com:
+#### Construir o Auth Service completo com:
 
 Registro
 
@@ -17,7 +17,7 @@ User model
 
 Tenant model
 
-🚀 Stack Técnica
+#### 🚀 Stack Técnica
 NestJS
 
 Framework backend robusto — estrutura modular, testes nativos, DI completo.
@@ -52,8 +52,8 @@ passport-jwt
 
 bcrypt
 
-🗂️ Estrutura do Auth Service
-services/auth-service/
+#### 🗂️ Estrutura do Auth Service
+```services/auth-service/
 ├── src/
 │   ├── auth/
 │   │   ├── auth.controller.ts
@@ -66,8 +66,8 @@ services/auth-service/
 │   └── main.ts
 ├── Dockerfile
 └── docker-compose.yml
-
-📘 Modelos principais
+```
+#### 📘 Modelos principais
 User
 
 id
@@ -98,7 +98,7 @@ plan
 
 createdAt
 
-🔐 Fluxos Essenciais do Backend
+### 🔐 Fluxos Essenciais do Backend
 Registro
 
 Receber email/senha/nome
