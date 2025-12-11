@@ -1,33 +1,35 @@
-# beSyS — Documentação do Backend
+# ⚙️ beSyS — **Documentação do Backend**
 
-## 1. Introdução
+## 🚀 1. Introdução
 
-Backend do sistema beSyS, implementado em **Node.js + NestJS**, seguindo princípios de modularidade, segurança e escalabilidade. Este documento descreve a arquitetura interna, módulos, padrões e convenções.
+O backend do **beSyS** é desenvolvido com **Node.js + NestJS**, estruturado para oferecer alta segurança, modularidade, escalabilidade e facilidade de manutenção.
 
----
-
-## 2. Tecnologias
-
-* **Node.js 18+**
-* **NestJS**
-* **TypeScript**
-* **Prisma ORM**
-* **PostgreSQL**
-* **JWT / RBAC**
-* **Zod (opcional)** para validação
-* **Class-validator** para DTOs
+Este documento detalha arquitetura interna, módulos, banco, padrões e roadmap.
 
 ---
 
-## 3. Arquitetura Interna
+## 🧰 2. Tecnologias Utilizadas
 
-Estrutura por módulos independentes (Domain-Driven Structure):
+* 🟩 **Node.js 18+**
+* 🛡️ **NestJS**
+* 🧩 **TypeScript**
+* 🟦 **Prisma ORM**
+* 🗄️ **PostgreSQL**
+* 🔐 **JWT + RBAC**
+* 🧪 **Class-validator** para DTOs
+* 🧵 **Zod** (opcional) para validações adicionais
+
+---
+
+## 🏗️ 3. Arquitetura Interna
+
+A arquitetura segue o padrão **modular do NestJS**, inspirada em práticas de **DDD** (Domain-Driven Design).
 
 ```
 backend/
 └─ src/
-   ├─ app.module.ts
    ├─ main.ts
+   ├─ app.module.ts
    ├─ common/
    │  ├─ decorators/
    │  ├─ guards/
@@ -46,54 +48,64 @@ backend/
       └─ prisma.service.ts
 ```
 
+Cada módulo possui:
+
+* **controller** → rotas
+* **service** → regras de negócio
+* **dto** → validação
+* **entities** (opcional)
+
 ---
 
-## 4. Módulos
+## 🧩 4. Módulos do Sistema
 
-### Auth
+### 🔐 Auth
 
-* Login por email/senha
-* Tokens JWT
-* Middleware + Guards de autorização
+* Login com email/senha
+* Emissão de **JWT**
+* Guards: `AuthGuard`, `RolesGuard`
 
-### Users
+### 👥 Users
 
-* Cadastro
-* Perfil (admin, funcionário, cliente)
-* Relacionamento com empresas
+* CRUD de usuários
+* Perfis: `admin`, `employee`, `client`
+* Relacionamento com Company
 
-### Companies
+### 🏢 Companies
 
 * Configurações gerais
-* Horários
-* Temas
+* Horários e dados internos
+* Temas personalizados
 
-### Products / Services
+### 🛒 Products / Services
 
 * CRUD completo
 * Categorias
+* Itens vendáveis e serviços agendáveis
 
-### Orders
+### 📦 Orders
 
-* Fluxo completo de pedido
-* Status
-* Integração com PDV
+* Criação de pedidos
+* Fluxo do PDV
+* Status do pedido
 
-### Appointments
+### 📅 Appointments
 
 * Agendamento de serviços
-* Verificação de disponibilidade
+* Validação de disponibilidade
+* Lista da agenda
 
-### Cash Register
+### 💰 Cash Register
 
 * Abertura/fechamento
 * Operações de caixa
+* Integração com pedidos
 
 ---
 
-## 5. Banco de Dados (Prisma)
+## 🗄️ 5. Banco de Dados (Prisma ORM)
 
-Schema base:
+Schema base simplificado:
 
 ```
 model User {
@@ -121,9 +133,9 @@ enum Role {
 
 ---
 
-## 6. APIs
+## 🔗 6. APIs
 
-Padrões:
+Rotas seguem padrão REST:
 
 ```
 /api/v1/auth/login
@@ -135,7 +147,7 @@ Padrões:
 /api/v1/cash
 ```
 
-Retornos padronizados:
+### 📤 Respostas padronizadas
 
 ```
 {
@@ -148,7 +160,7 @@ Retornos padronizados:
 
 ---
 
-## 7. Scripts
+## 🧪 7. Scripts Úteis
 
 ```
 pnpm run start:dev
@@ -158,18 +170,24 @@ pnpm prisma studio
 
 ---
 
-## 8. Segurança
+## 🛡️ 8. Segurança
 
-* Hash com bcrypt
-* JWT + Refresh Tokens (opcional)
-* RBAC por decorator @Roles()
-* Rate limiting por IP (middleware)
+* ✔️ Hash de senha com **bcrypt**
+* 🔑 JWT Access Token + Refresh Token (opcional)
+* 🧩 RBAC com decorator `@Roles()`
+* 🚧 Rate limiting por IP
+* 🛁 Sanitização via pipes
 
 ---
 
-## 9. Roadmap Backend
+## 🧭 9. Roadmap Backend
 
-* [ ] Finalizar RBAC avançado
-* [ ] Adicionar WebSockets
-* [ ] Adicionar integração com meios de pagamento
-* [ ] Testes end-to-end (E2E)
+* [ ] RBAC avançado com permissões granulares
+* [ ] WebSockets para pedidos e agenda
+* [ ] Integração com pagamentos
+* [ ] Testes E2E com Jest + Supertest
+* [ ] Multi-tenancy por schema
+
+---
+
+Se quiser, posso gerar **diagramas internos**, **exemplo real de módulo completo**, ou **estrutura do banco detalhada**! 🚀
