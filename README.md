@@ -1,5 +1,5 @@
 # 🛠️ Backend — Auth Service (NestJS)
-## 🎯 Objetivo
+### 🎯 Objetivo
 
 Criar o **serviço de autenticação e multi-tenancy**, incluindo:
 
@@ -10,7 +10,7 @@ Criar o **serviço de autenticação e multi-tenancy**, incluindo:
 - Models: User, Tenant
 - Integração com PostgreSQL via Docker
 
-### 🚀 Stack Técnica
+## 🚀 Stack Técnica
 
 - **NestJS**
 - **TypeORM** + PostgreSQL
@@ -19,7 +19,7 @@ Criar o **serviço de autenticação e multi-tenancy**, incluindo:
 - **JWT (Passport + passport-jwt)**
 - **class-validator / class-transformer**
 
-### 📂 Estrutura do Auth Service
+## 📂 Estrutura do Auth Service
 ```
 services/auth-service/
 ├── src/
@@ -54,16 +54,16 @@ services/auth-service/
 - plan
 - createdAt
 
-### 🔐 Fluxos Essenciais
+## 🔐 Fluxos Essenciais
 
-#### Registro
+### Registro
 **1.** Receber email, senha, nome e nome do tenant
 **2.** Criar Tenant
 **3.** Hash de senha (bcrypt)
 **4.** Criar User como administrador do tenant
 **5.** Retornar 201
 
-#### Login
+### Login
 **1.** Validar email/senha
 **2.** Checar tenant
 **3.** Gerar JWT
