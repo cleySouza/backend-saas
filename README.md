@@ -57,18 +57,14 @@ services/auth-service/
 ### 🔐 Fluxos Essenciais
 
 #### Registro
-1. Receber email, senha, nome e nome do tenant
-2. Criar Tenant
-3. Hash de senha (bcrypt)
-4. Criar User como administrador do tenant
-5. Retornar 201
+**1.** Receber email, senha, nome e nome do tenant
+**2.** Criar Tenant
+**3.** Hash de senha (bcrypt)
+**4.** Criar User como administrador do tenant
+**5.** Retornar 201
 
-Login
-
-Validar email/senha
-
-Checar tenant
-
-Gerar JWT
-
-Retornar token
+#### Login
+**1.** Validar email/senha
+**2.** Checar tenant
+**3.** Gerar JWT
+**4.** Retornar token
