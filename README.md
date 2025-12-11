@@ -3,19 +3,13 @@
 
 #### Construir o Auth Service completo com:
 
-Registro
-
-Login
-
-Multi-Tenancy
-
-JWT Access Token
-
-Refresh Token (opcional depois)
-
-User model
-
-Tenant model
+- Registro
+- Login
+- Multi-Tenancy
+- JWT Access Token
+- Refresh Token (opcional depois)
+- User model
+- Tenant model
 
 #### 🚀 Stack Técnica
 NestJS
