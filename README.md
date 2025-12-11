@@ -1,53 +1,31 @@
-# 🛠️ Documentação — Backend (Auth Service)
-## 🎯 Objetivo do Backend Inicial
+# 🛠️ Backend — Auth Service (NestJS)
+## 🎯 Objetivo
 
-#### Construir o Auth Service completo com:
+Criar o serviço de autenticação e multi-tenancy, incluindo:
 
 - Registro
 - Login
-- Multi-Tenancy
 - JWT Access Token
-- Refresh Token (opcional depois)
-- User model
-- Tenant model
+- Multi-Tenant via `tenantId`
+- Models: User, Tenant
+- Integração com PostgreSQL via Docker
 
-#### 🚀 Stack Técnica
+🚀 Stack Técnica
+
 NestJS
-
-Framework backend robusto — estrutura modular, testes nativos, DI completo.
 
 TypeORM + PostgreSQL
 
-PostgreSQL como DB primário
-
-TypeORM para migrations e models
-
 Docker + docker-compose
-
-Container para:
-
-Auth Service
-
-PostgreSQL
-
-(Futuro) Redis para blacklist de tokens
-
-Validations
-
-class-validator
-
-class-transformer
-
-Auth
-
-@nestjs/passport
-
-passport-jwt
 
 bcrypt
 
-#### 🗂️ Estrutura do Auth Service
-```services/auth-service/
+JWT (Passport + passport-jwt)
+
+class-validator / class-transformer
+
+📂 Estrutura do Auth Service
+services/auth-service/
 ├── src/
 │   ├── auth/
 │   │   ├── auth.controller.ts
@@ -56,19 +34,19 @@ bcrypt
 │   │   └── strategies/
 │   ├── user/
 │   ├── tenant/
-│   ├── prisma/ or typeorm/
+│   ├── database/
 │   └── main.ts
 ├── Dockerfile
 └── docker-compose.yml
-```
-#### 📘 Modelos principais
+
+📘 Modelos
 User
 
 id
 
-name
-
 email
+
+name
 
 passwordHash
 
@@ -92,16 +70,16 @@ plan
 
 createdAt
 
-### 🔐 Fluxos Essenciais do Backend
+🔐 Fluxos Essenciais
 Registro
 
-Receber email/senha/nome
+Receber email, senha, nome e nome do tenant
 
-Validar tenant
+Criar Tenant
 
-Hash da senha (bcrypt)
+Hash de senha (bcrypt)
 
-Criar User + Tenant
+Criar User como administrador do tenant
 
 Retornar 201
 
@@ -109,8 +87,8 @@ Login
 
 Validar email/senha
 
-Validar tenant
+Checar tenant
 
-Emitir JWT (payload: userId + tenantId)
+Gerar JWT
 
-Retornar tokens
+Retornar token
