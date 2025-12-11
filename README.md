@@ -4,11 +4,136 @@
 
 O backend do **beSyS** é desenvolvido com **Node.js + NestJS**, estruturado para oferecer alta segurança, modularidade, escalabilidade e facilidade de manutenção.
 
-Este documento detalha arquitetura interna, módulos, banco, padrões e roadmap.
+Este documento inclui **diagramas avançados** de arquitetura, fluxo, módulos e interação.
 
 ---
 
-## 🧰 2. Tecnologias Utilizadas
+# 🧭 2. Diagramas Avançados
+
+## 🏗️ 2.1 Diagrama Geral da Arquitetura Backend
+
+```
+                       ┌───────────────────────────┐
+                       │         Frontends          │
+                       │  Admin (PDV) / Cliente     │
+                       └─────────────┬─────────────┘
+                                     │ REST / JSON
+                                     ▼
+                        ┌────────────────────────┐
+                        │      API Gateway       │
+                        │ (NestJS Controllers)   │
+                        └─────────────┬──────────┘
+                                      │ calls
+                                      ▼
+                    ┌───────────────────────────────┐
+                    │        Application Layer       │
+                    │  (Services, Regras de Negócio) │
+                    └─────────────┬──────────────────┘
+                                    │ Prisma Client
+                                    ▼
+                      ┌─────────────────────────────┐
+                      │         Data Layer           │
+                      │        PostgreSQL/Prisma     │
+                      └─────────────────────────────┘
+```
+
+---
+
+## 🧩 2.2 Diagrama de Módulos
+
+```
+ backend/modules
+ ├── auth
+ │    ├── login
+ │    ├── jwt
+ │    └── rbac
+ ├── users
+ ├── companies
+ ├── products
+ ├── orders
+ │    ├── pedido
+ │    ├── status
+ │    └── integração PDV
+ ├── appointments
+ └── cash-register
+```
+
+```
+        ┌───────── auth ─────────┐
+        │   JWT • Login • RBAC   │
+        └──────────┬─────────────┘
+                   ▼
+   ┌──── users ────┬──── companies ────┐
+   │               │                    │
+   ▼               ▼                    ▼
+ products → orders → appointments → cash-register
+```
+
+---
+
+## 🔄 2.3 Fluxo de Autenticação (JWT)
+
+```
+[1] Cliente envia email/senha
+        │
+        ▼
+[2] AuthService valida credenciais
+        │
+        ▼
+[3] Geração de AccessToken + RefreshToken
+        │
+        ▼
+[4] Resposta:
+{
+  accessToken,
+  refreshToken,
+  user
+}
+        │
+        ▼
+[5] Próximas requisições → Header: Authorization: Bearer TOKEN
+```
+
+---
+
+## 📦 2.4 Fluxo de Pedido (Orders)
+
+```
+Cliente
+  │
+  ├─ POST /orders
+  ▼
+Backend
+  │  Valida itens, preços, estoque
+  │  Registra pedido
+  ▼
+Caixa / PDV
+  │  Recebe notificação
+  │  Atualiza status (pending → confirmed)
+  ▼
+Cliente recebe confirmação
+```
+
+---
+
+## 📅 2.5 Fluxo de Agendamento (Appointments)
+
+```
+Cliente → Seleciona serviço
+      → Envia data/hora desejada
+                │
+                ▼
+         Backend verifica disponibilidade
+                │
+                ├── horário livre → cria agendamento
+                └── horário ocupado → retorna erro
+                ▼
+       PDV recebe agendamento pendente
+```
+
+---
+
+# 🧰 3. Tecnologias
 
 * 🟩 **Node.js 18+**
 * 🛡️ **NestJS**
@@ -17,13 +142,11 @@ Este documento detalha arquitetura interna, módulos, banco, padrões e roadmap.
 * 🗄️ **PostgreSQL**
 * 🔐 **JWT + RBAC**
 * 🧪 **Class-validator** para DTOs
-* 🧵 **Zod** (opcional) para validações adicionais
+* 🧵 **Zod** (opcional)
 
 ---
 
-## 🏗️ 3. Arquitetura Interna
-
-A arquitetura segue o padrão **modular do NestJS**, inspirada em práticas de **DDD** (Domain-Driven Design).
+# 🏗️ 4. Arquitetura Interna
 
 ```
 backend/
@@ -48,64 +171,27 @@ backend/
       └─ prisma.service.ts
 ```
 
-Cada módulo possui:
-
-* **controller** → rotas
-* **service** → regras de negócio
-* **dto** → validação
-* **entities** (opcional)
-
 ---
 
-## 🧩 4. Módulos do Sistema
+# 🧩 5. Módulos do Sistema
 
 ### 🔐 Auth
 
-* Login com email/senha
-* Emissão de **JWT**
-* Guards: `AuthGuard`, `RolesGuard`
-
 ### 👥 Users
-
-* CRUD de usuários
-* Perfis: `admin`, `employee`, `client`
-* Relacionamento com Company
 
 ### 🏢 Companies
 
-* Configurações gerais
-* Horários e dados internos
-* Temas personalizados
-
-### 🛒 Products / Services
-
-* CRUD completo
-* Categorias
-* Itens vendáveis e serviços agendáveis
+### 🛒 Products
 
 ### 📦 Orders
 
-* Criação de pedidos
-* Fluxo do PDV
-* Status do pedido
-
 ### 📅 Appointments
-
-* Agendamento de serviços
-* Validação de disponibilidade
-* Lista da agenda
 
 ### 💰 Cash Register
 
-* Abertura/fechamento
-* Operações de caixa
-* Integração com pedidos
-
 ---
 
-## 🗄️ 5. Banco de Dados (Prisma ORM)
-
-Schema base simplificado:
+# 🗄️ 6. Banco de Dados (Prisma ORM)
 
 ```
 model User {
@@ -133,9 +219,7 @@ enum Role {
 
 ---
 
-## 🔗 6. APIs
-
-Rotas seguem padrão REST:
+# 🔗 7. APIs
 
 ```
 /api/v1/auth/login
@@ -147,20 +231,9 @@ Rotas seguem padrão REST:
 /api/v1/cash
 ```
 
-### 📤 Respostas padronizadas
-
-```
-{
-  success: boolean,
-  data?: any,
-  message?: string,
-  errors?: any
-}
-```
-
 ---
 
-## 🧪 7. Scripts Úteis
+# 🧪 8. Scripts
 
 ```
 pnpm run start:dev
@@ -170,24 +243,23 @@ pnpm prisma studio
 
 ---
 
-## 🛡️ 8. Segurança
+# 🛡️ 9. Segurança
 
-* ✔️ Hash de senha com **bcrypt**
-* 🔑 JWT Access Token + Refresh Token (opcional)
-* 🧩 RBAC com decorator `@Roles()`
-* 🚧 Rate limiting por IP
-* 🛁 Sanitização via pipes
-
----
-
-## 🧭 9. Roadmap Backend
-
-* [ ] RBAC avançado com permissões granulares
-* [ ] WebSockets para pedidos e agenda
-* [ ] Integração com pagamentos
-* [ ] Testes E2E com Jest + Supertest
-* [ ] Multi-tenancy por schema
+* bcrypt
+* JWT + Refresh Token
+* Guards + RBAC
+* Rate limiting
 
 ---
 
-Se quiser, posso gerar **diagramas internos**, **exemplo real de módulo completo**, ou **estrutura do banco detalhada**! 🚀
+# 🧭 10. Roadmap Backend
+
+* [ ] RBAC avançado
+* [ ] WebSockets
+* [ ] Pagamentos
+* [ ] E2E
+* [ ] Multi-tenancy
+
+---
+
+Quer que eu adicione **diagramas UML**, **sequência detalhada**, ou **diagramas por módulo**?
